@@ -38,7 +38,9 @@ const UsuarioSchema = Schema({
 
 // Método para sobreescribir mongoose
 UsuarioSchema.methods.toJSON = function () {
-	const { __v, password, ...usuario } = this.toObject();
+	const { __v, password, _id, ...usuario } = this.toObject();
+	// Cambiando visualmente el _id de mongoose por el uid personalizado
+	usuario.uid = _id;
 	return usuario;
 };
 
