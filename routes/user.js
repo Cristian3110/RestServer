@@ -6,7 +6,13 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { validarCampos } = require('../middleware/validar-campos');
+// const { validarCampos } = require('../middleware/validar-campos');
+// const { validarJWT } = require('../middleware/validar-jwt');
+// const { esAdminRole, tieneRole } = require('../middleware/validar-roles');
+
+// no necesita referencia del index, lo toma automático
+const { validarCampos, validarJWT, esAdminRole, tieneRole } = require('../middleware');
+
 const { esRolValido, emailExiste, existeUsuarioPorId } = require('../helpers/dbValidators');
 
 const {
@@ -51,9 +57,13 @@ router.patch('/', usuariosPatch);
 
 router.delete(
 	'/:id',
-	[check('id', 'No es un Id valido').isMongoId(), check('id').custom(existeUsuarioPorId)],
-	validarCampos,
-
+	[
+		validarJWT,
+		// esAdminRole,
+		tieneRole('ADMIN_ROLE', 'VENTAS_ROLE'),
+		(check('id', 'No es un Id valido').isMongoId(), check('id').custom(existeUsuarioPorId)),
+		validarCampos,
+	],
 	usuariosDelete
 );
 
