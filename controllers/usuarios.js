@@ -7,7 +7,7 @@ const Usuario = require('../models/usuario');
 const bcrypt = require('bcryptjs');
 
 const usuariosGet = async (req = request, res = response) => {
-	// Solicitud de usuarios por
+	// Solicitud de usuarios por paginado
 	const { limite = 5, desde = 0 } = req.query;
 	// Para traer solo usuarios con estados en true
 	const query = { estado: true };
